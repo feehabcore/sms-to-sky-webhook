@@ -1,6 +1,6 @@
 # SMS Payment Forwarder (sms-to-sky-webhook)
 
-Android SMS → webhook gateway for Bangladesh mobile-money payment notifications (bKash, Nagad, Rocket, Upay).
+Android SMS → webhook gateway for Bangladesh mobile-money payment notifications (bKash, Nagad, Rocket, Upay), plus a Node.js receiver that verifies HMAC signatures and matches payments to orders.
 
 ## Features
 
@@ -8,37 +8,56 @@ Android SMS → webhook gateway for Bangladesh mobile-money payment notification
 - Local Room queue with fingerprint-based deduplication
 - WorkManager delivery with HMAC-SHA256 signing and retries
 - Dashboard, event history, settings, and SMS simulator
-- Shared TypeScript contracts in `shared/` for backend consumers
+- Node webhook server: device auth, event ingest, order matching, admin API
+- Shared TypeScript contracts in `shared/`
 
 ## Project layout
 
 ```
 android/   # Kotlin Android app (SMSPaymentForwarder)
 shared/    # @smsforwarder/shared TypeScript types & constants
+server/    # Express webhook + admin API
 ```
 
-## Requirements
+## Quick start — server
 
-- Android Studio Hedgehog+ (or equivalent)
-- JDK 17
-- Android SDK 34
-- Phone or emulator (minSdk 26)
+```bash
+cd shared && npm install && npm run build && cd ..
+cd server
+cp .env.example .env
+npm install
+npm run seed
+npm run dev
+```
 
-## Run the app
+Server listens on `http://0.0.0.0:8787`.
 
-1. Open `android/` in Android Studio
-2. Let Gradle sync finish
-3. Run on a device/emulator
-4. Open **Settings** and set:
-   - Webhook URL
-   - API token
-   - HMAC secret
-5. Grant SMS + notification permissions
-6. Use **Simulate SMS** or wait for a real payment SMS
+| Endpoint | Auth | Purpose |
+|----------|------|---------|
+| `GET /health` | none | Liveness |
+| `POST /webhook/payments` | device HMAC | Ingest payment SMS events |
+| `GET/POST /admin/devices` | `X-Admin-Token` | List / register devices |
+| `GET/POST /admin/orders` | `X-Admin-Token` | List / create orders |
+| `GET /admin/events` | `X-Admin-Token` | Recent webhook events |
+| `GET /admin/payments` | `X-Admin-Token` | Matched/unmatched payments |
+
+After `npm run seed`, use these in the Android **Settings** screen:
+
+- **Webhook URL** (emulator): `http://10.0.2.2:8787/webhook/payments`
+- **Webhook URL** (LAN phone): `http://<your-pc-ip>:8787/webhook/payments`
+- **API token** / **HMAC secret**: printed by the seed script (defaults in `.env.example`)
+
+## Quick start — Android app
+
+1. Open `android/` in Android Studio (JDK 17, SDK 34, minSdk 26)
+2. Run on a device/emulator
+3. Configure Settings with the seeded credentials above
+4. Grant SMS + notification permissions
+5. Use **Simulate SMS** or wait for a real payment SMS
 
 ## Webhook contract
 
-`POST` JSON body (`WebhookPaymentPayload`):
+`POST /webhook/payments` JSON body (`WebhookPaymentPayload`):
 
 | Field | Type | Notes |
 |-------|------|--------|
@@ -61,6 +80,16 @@ shared/    # @smsforwarder/shared TypeScript types & constants
 - `X-Signature`: `hex(HMAC-SHA256(secret, "{timestamp}.{rawJsonBody}"))`
 
 Retry delays (seconds): `10, 30, 60, 300, 900, 1800`
+
+## Order matching
+
+Pending orders are matched when a payment arrives by:
+
+1. `reference` ↔ `order_number` / order id  
+2. else sender phone ↔ customer phone  
+3. else first pending order with the same amount + currency  
+
+Matched orders move to `PAID`.
 
 ## Shared package
 

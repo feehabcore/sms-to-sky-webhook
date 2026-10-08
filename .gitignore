@@ -22,4 +22,8 @@ android/.cxx/
 # Shared / Node
 shared/node_modules/
 shared/dist/
+server/node_modules/
+server/dist/
+server/data/
+server/.env
 *.tsbuildinfo
