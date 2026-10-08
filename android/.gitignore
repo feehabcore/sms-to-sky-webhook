@@ -12,3 +12,7 @@
 *.ap_
 *.dex
 app/build/
+keystore/
+keystore.properties
+*.jks
+*.keystore
