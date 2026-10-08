@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Payment SMS Gateway</string>
+    <string name="status_connected">ONLINE &amp; READY</string>
+    <string name="status_offline">OFFLINE / UNCONFIGURED</string>
+    <string name="title_event_history">Transaction Events</string>
+    <string name="title_settings">Gateway Settings</string>
+    <string name="title_simulator">Test SMS Simulator</string>
+    <string name="btn_test_webhook">TEST WEBHOOK</string>
+    <string name="btn_view_events">VIEW EVENTS</string>
+    <string name="btn_simulate_sms">SIMULATE SMS</string>
+    <string name="btn_settings">SETTINGS</string>
+    <string name="btn_retry_pending">RETRY PENDING QUEUE</string>
+    <string name="label_last_event">Last Payment Event</string>
+    <string name="label_queue">Queue: %1$d</string>
+    <string name="label_sent">Sent: %1$d</string>
+    <string name="label_failed">Failed: %1$d</string>
+    <string name="stat_queue">Queue</string>
+    <string name="stat_sent">Sent</string>
+    <string name="stat_failed">Failed</string>
+    <string name="foreground_service_title">Payment SMS Gateway Active</string>
+    <string name="foreground_service_desc">Listening for verified payment notifications</string>
+    <string name="no_events_yet">No payment events yet.</string>
+    <string name="device_id_label">Device: %1$s</string>
+    <string name="toast_retry_queued">Pending queue scheduled for delivery</string>
+    <string name="toast_settings_saved">Settings saved</string>
+    <string name="toast_permissions_granted">Permissions granted</string>
+    <string name="toast_permissions_denied">Some permissions were denied</string>
+    <string name="setting_gateway_enabled">Gateway enabled</string>
+    <string name="setting_foreground_service">Keep foreground service running</string>
+    <string name="hint_device_name">Device name</string>
+    <string name="hint_webhook_url">Webhook URL (https://…)</string>
+    <string name="hint_api_token">API token</string>
+    <string name="hint_hmac_secret">HMAC secret</string>
+    <string name="hint_filter_senders">Allowed SMS senders (optional, comma-separated)</string>
+    <string name="btn_save_settings">SAVE SETTINGS</string>
+    <string name="btn_request_permissions">REQUEST SMS &amp; BATTERY PERMISSIONS</string>
+    <string name="simulator_help">Paste a payment SMS to parse and enqueue a webhook delivery without waiting for a real message.</string>
+    <string name="hint_sms_sender">SMS sender</string>
+    <string name="hint_sms_body">SMS body</string>
+    <string name="btn_sample_bkash">Load bKash sample</string>
+    <string name="btn_sample_nagad">Load Nagad sample</string>
+    <string name="btn_parse_and_queue">PARSE &amp; QUEUE</string>
+    <string name="sample_bkash_sms">You have received Tk 500.00 from 01712345678. Fee Tk 0.00. Balance Tk 1200.00. TrxID 8A1B2C3D4E at 08/10/2026 10:15</string>
+    <string name="sample_nagad_sms">You have received money Tk 250.00 from 01876543210. Your current Nagad account balance is Tk 900.00. Transaction ID: NGD99887766.</string>
+</resources>

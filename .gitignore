@@ -1,0 +1,25 @@
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+
+# Android
+android/.gradle/
+android/local.properties
+android/**/build/
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Shared / Node
+shared/node_modules/
+shared/dist/
+*.tsbuildinfo
